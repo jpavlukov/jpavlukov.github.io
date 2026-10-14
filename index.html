@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eugene Pa | Short-form and branded video, New York</title>
+<meta name="description" content="Short-form and branded video by Eugene Pa, New York.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Each section sits on a blurred frame from its own video. */
+  :root {
+    --bg: #0a0a0a;
+    --fg: #f2f2f2;
+    --muted: #8a8a8a;
+    --line: rgba(255, 255, 255, .12);
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); font-family: "Inter Tight", -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(10, 10, 10, .72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  header .wrap { display: flex; justify-content: space-between; align-items: center; height: 60px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; }
+  nav { display: flex; gap: 26px; color: #777; }
+  nav a:hover, nav a.on { color: var(--fg); }
+
+  .hero { padding: 64px 0 72px; }
+  .hero h1 { font-size: clamp(44px, 8.6vw, 112px); font-weight: 700; letter-spacing: -.05em; line-height: .88; text-transform: uppercase; max-width: 980px; }
+  .hero p { margin-top: 24px; color: var(--muted); font-size: 15px; }
+  .hint { margin-top: 14px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; }
+
+  .band { position: relative; overflow: hidden; padding: 56px 0 64px; }
+  .amb {
+    position: absolute; inset: -80px; z-index: 0; background-size: cover; background-position: center;
+    filter: blur(70px) saturate(1.5) brightness(.42); opacity: .9;
+  }
+  .band::after {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(10,10,10,.25) 22%, rgba(10,10,10,.25) 78%, var(--bg) 100%);
+  }
+  .sh { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 20px; }
+  .sh h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 600; letter-spacing: -.04em; text-transform: uppercase; line-height: 1; }
+  .sh span { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; text-align: right; }
+
+  .row { display: grid; gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .item { cursor: pointer; }
+  .frame { position: relative; aspect-ratio: 9 / 16; overflow: hidden; background: #151515; }
+  .frame video { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter .3s; }
+  .item:hover .frame video { filter: brightness(1.08); }
+  .snd {
+    position: absolute; right: 10px; top: 10px; z-index: 2;
+    font-family: var(--mono); font-size: 10px; font-weight: 500; text-transform: uppercase;
+    background: var(--fg); color: var(--bg); padding: 5px 8px; transition: background .2s, color .2s;
+  }
+  .item:hover .snd { background: var(--bg); color: var(--fg); }
+  .cap { margin-top: 10px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; line-height: 1.5; overflow-wrap: anywhere; }
+  .cap span { display: block; color: var(--muted); }
+
+  .empty { cursor: default; }
+  .empty .frame {
+    background: rgba(255, 255, 255, .02); outline: 1px solid rgba(255, 255, 255, .14); outline-offset: -1px;
+    display: grid; place-items: center; font-family: var(--mono); font-size: 10px; color: #666; text-transform: uppercase;
+  }
+
+  /* Wide videos share one row at equal height: width follows aspect ratio (--r). */
+  .row.wide { display: flex; gap: 10px; align-items: flex-start; }
+  .row.wide .item { flex: var(--r) 1 0; min-width: 0; }
+  .row.wide .frame video { object-fit: contain; background: #000; }
+
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; padding: 40px 20px 52px; }
+  footer .who { font-size: 28px; font-weight: 600; letter-spacing: -.03em; text-transform: uppercase; }
+  .cta { font-family: var(--mono); font-size: 12px; text-transform: uppercase; background: var(--fg); color: var(--bg); padding: 13px 20px; }
+  .cta:hover { background: #fff; }
+
+  .lb {
+    position: fixed; inset: 0; z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    background: #050505; padding: 56px 16px 20px;
+  }
+  .lb.open { display: flex; }
+  .lb video { max-height: calc(100vh - 140px); max-width: 100%; width: auto; height: auto; background: #000; }
+  .lb-bar { display: flex; align-items: center; gap: 16px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; }
+  .lb-btn { font: inherit; background: var(--fg); color: var(--bg); border: 0; padding: 8px 12px; cursor: pointer; }
+  .lb-close { position: absolute; top: 12px; right: 18px; background: none; border: 0; color: var(--fg); font-size: 34px; line-height: 1; cursor: pointer; }
+
+  @media (max-width: 720px) {
+    .hero { padding: 40px 0 48px; }
+    .band { padding: 40px 0 44px; }
+    .sh { flex-wrap: wrap; gap: 6px; }
+    .sh span { text-align: left; width: 100%; }
+    .row { gap: 5px; }
+    .snd { right: 5px; top: 5px; padding: 3px 5px; font-size: 9px; }
+    .snd em { display: none; }
+    .cap { font-size: 9px; margin-top: 7px; }
+    .row.wide { flex-direction: column; gap: 22px; }
+    .row.wide .item { flex: none; width: 100%; }
+    .row.wide .snd em { display: inline; }
+    footer .who { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="./">Eugene Pa</a>
+    <nav>
+      <a class="on" href="./">Video</a>
+      <a href="https://www.instagram.com/eugene_pvlkv/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <h1>Short-form and branded video</h1>
+    <p>Based in New York.</p>
+    <div class="hint">&#9654; Tap any video to watch it bigger, with sound</div>
+  </section>
+</div>
+
+<main id="sections"></main>
+
+<footer>
+  <div class="wrap">
+    <span class="who">Eugene Pa</span>
+    <a class="cta" href="https://www.instagram.com/eugene_pvlkv/" target="_blank" rel="noopener">DM on Instagram</a>
+  </div>
+</footer>
+
+<div class="lb" id="lb">
+  <button class="lb-close" aria-label="Close" id="lbClose">&times;</button>
+  <video id="lbVideo" controls playsinline></video>
+  <div class="lb-bar"><span id="lbTitle"></span><button class="lb-btn" id="lbFull">Full screen</button></div>
+</div>
+
+<script>
+  // file + poster in videos/; ratio only for horizontal videos.
+  const V = {
+    charney1: { file: "videos/charney-space-location.mp4", poster: "videos/charney-space-location.jpg", title: "Location vs space" },
+    charney2: { file: "videos/charney-convenience.mp4", poster: "videos/charney-convenience.jpg", title: "Amenity vs value" },
+    charney3: { file: "videos/charney-powerhouse.mp4", poster: "videos/charney-powerhouse.jpg", title: "Powerhouse Arts" },
+    pony:     { file: "videos/pony-club.mp4", poster: "videos/pony-club.jpg", title: "Ocean Savage × Pony Club", sub: "NYFW pop-up afterparty" },
+    immrsv:   { file: "videos/immrsv-shwrm.mp4", poster: "videos/immrsv-shwrm.jpg", title: "IMMRSV SHWRM", sub: "Fashion pop-up" },
+    red:      { file: "videos/ragery.mp4", poster: "videos/ragery.jpg", title: "The Ragery", sub: "NYFW afterparty in a rage room" },
+    dinner:   { file: "videos/candlelit-dinner.mp4", poster: "videos/candlelit-dinner.jpg", title: "Candlelit dinner", sub: "Chef's table" },
+    chetana:  { file: "videos/chetana-rooftop.mp4", poster: "videos/chetana-rooftop.jpg", title: "Chetana", sub: "Rooftop party" },
+    eclectic: { file: "videos/eclectic-bar.mp4", poster: "videos/eclectic-bar.jpg", title: "Eclectic Mobile Bar", sub: "Party in a loft" },
+    citibike: { file: "videos/citibike.mp4", poster: "videos/citibike.jpg", title: "Citi Bike oyster bar" },
+    film:     { file: "videos/main-rival.mp4", poster: "videos/main-rival.jpg", title: "Meeting my main rival", sub: "Short film", ratio: "720 / 502" },
+    day:      { file: "videos/day-in-nyc.mp4", poster: "videos/day-in-nyc.jpg", title: "A day in New York", sub: "Creator around the city", ratio: "16 / 9" },
+  };
+  // glow: whose frame is blurred behind the section; slots: total places in the row (empty ones show "coming soon").
+  const SECTIONS = [
+    { title: "Branded content", sub: "Charney Companies, New York real estate", glow: V.charney3, items: [V.charney1, V.charney2, V.charney3] },
+    { title: "Fashion week nights", sub: "Parties and pop-ups", glow: V.red, items: [V.pony, V.immrsv, V.red] },
+    { title: "Events", sub: "Dinners and parties", glow: V.dinner, items: [V.dinner, V.chetana, V.eclectic] },
+    { title: "Own ideas", glow: V.citibike, items: [V.citibike] },
+    { title: "Cinematic", sub: "Short film and travel", glow: V.day, wide: true, items: [V.film, V.day] },
+  ];
+
+  const root = document.getElementById("sections");
+  const num = r => { const [a, b] = r.split("/").map(Number); return a / b; };
+  SECTIONS.forEach((s, i) => {
+    const sec = document.createElement("section");
+    sec.className = "band";
+    sec.innerHTML = `<div class="amb" style="background-image:url('${s.glow.poster}')"></div>
+      <div class="wrap">
+        <div class="sh"><h2>${s.title}</h2><span>${String(i + 1).padStart(2, "0")}${s.sub ? " / " + s.sub : ""}</span></div>
+        <div class="row${s.wide ? " wide" : ""}"></div>
+      </div>`;
+    const row = sec.querySelector(".row");
+    s.items.forEach(v => {
+      const el = document.createElement("div");
+      el.className = "item";
+      if (s.wide) el.style.setProperty("--r", num(v.ratio));
+      el.innerHTML = `
+        <div class="frame" style="aspect-ratio: ${v.ratio || "9 / 16"}">
+          <video src="${v.file}" poster="${v.poster}" muted loop playsinline preload="metadata"></video>
+          <span class="snd"><em>Sound </em>&#9654;</span>
+        </div>
+        <div class="cap">${v.title}${v.sub ? `<span>${v.sub}</span>` : ""}</div>`;
+      el.onclick = () => openLb(v);
+      row.appendChild(el);
+    });
+    for (let k = s.items.length; k < (s.slots || 0); k++) {
+      const el = document.createElement("div");
+      el.className = "item empty";
+      el.innerHTML = `<div class="frame">coming soon</div><div class="cap">&nbsp;</div>`;
+      row.appendChild(el);
+    }
+    root.appendChild(sec);
+  });
+
+  // Muted previews play only while visible.
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause(); });
+  }, { threshold: 0.4 });
+  root.querySelectorAll("video").forEach(v => io.observe(v));
+
+  // Click: open with sound; Full screen button.
+  const lb = document.getElementById("lb"), lbVideo = document.getElementById("lbVideo"), lbTitle = document.getElementById("lbTitle");
+  function openLb(v) {
+    lbVideo.src = v.file; lbTitle.textContent = v.title; lb.classList.add("open");
+    lbVideo.muted = false; lbVideo.play().catch(() => {});
+  }
+  function closeLb() {
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    lbVideo.pause(); lbVideo.removeAttribute("src"); lbVideo.load(); lb.classList.remove("open");
+  }
+  document.getElementById("lbFull").onclick = () => {
+    if (lbVideo.requestFullscreen) lbVideo.requestFullscreen().catch(() => {});
+    else if (lbVideo.webkitEnterFullscreen) lbVideo.webkitEnterFullscreen();   // iPhone Safari
+  };
+  document.getElementById("lbClose").onclick = closeLb;
+  lb.onclick = e => { if (e.target === lb) closeLb(); };
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeLb(); });
+</script>
+</body>
+</html>
