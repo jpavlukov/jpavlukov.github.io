@@ -147,6 +147,7 @@
     pony:     { file: "videos/pony-club.mp4", poster: "videos/pony-club.jpg", title: "Ocean Savage × Pony Club", sub: "NYFW pop-up afterparty" },
     immrsv:   { file: "videos/immrsv-shwrm.mp4", poster: "videos/immrsv-shwrm.jpg", title: "IMMRSV SHWRM", sub: "Fashion pop-up" },
     red:      { file: "videos/ragery.mp4", poster: "videos/ragery.jpg", title: "The Ragery", sub: "NYFW afterparty in a rage room" },
+    predinner: { file: "videos/preopening-dinner.mp4", poster: "videos/preopening-dinner.jpg", title: "Pre-opening dinner", sub: "Supper by candlelight" },
     dinner:   { file: "videos/candlelit-dinner.mp4", poster: "videos/candlelit-dinner.jpg", title: "Candlelit dinner", sub: "Chef's table" },
     chetana:  { file: "videos/chetana-rooftop.mp4", poster: "videos/chetana-rooftop.jpg", title: "Chetana", sub: "Rooftop party" },
     eclectic: { file: "videos/eclectic-bar.mp4", poster: "videos/eclectic-bar.jpg", title: "Eclectic Mobile Bar", sub: "Party in a loft" },
@@ -158,7 +159,7 @@
   const SECTIONS = [
     { title: "Branded content", sub: "Charney Companies, New York real estate", glow: V.charney3, items: [V.charney1, V.charney2, V.charney3] },
     { title: "Fashion week nights", sub: "Parties and pop-ups", glow: V.red, items: [V.pony, V.immrsv, V.red] },
-    { title: "Events", sub: "Dinners and parties", glow: V.dinner, items: [V.dinner, V.chetana, V.eclectic] },
+    { title: "Events", sub: "Dinners and parties", glow: V.dinner, items: [V.predinner, V.dinner, V.chetana, V.eclectic], cols: 4 },
     { title: "Own ideas", glow: V.citibike, items: [V.citibike] },
     { title: "Cinematic", sub: "Short film and travel", glow: V.day, wide: true, items: [V.film, V.day] },
   ];
@@ -171,7 +172,7 @@
     sec.innerHTML = `<div class="amb" style="background-image:url('${s.glow.poster}')"></div>
       <div class="wrap">
         <div class="sh"><h2>${s.title}</h2><span>${String(i + 1).padStart(2, "0")}${s.sub ? " / " + s.sub : ""}</span></div>
-        <div class="row${s.wide ? " wide" : ""}"></div>
+        <div class="row${s.wide ? " wide" : ""}"${s.cols ? ` style="grid-template-columns:repeat(${s.cols},minmax(0,1fr))"` : ""}></div>
       </div>`;
     const row = sec.querySelector(".row");
     s.items.forEach(v => {
